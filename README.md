@@ -23,3 +23,14 @@ streamlit run src/app.py
 #   ポートはstreamlitのデフォルトポート想定
 streamlit run src/app.py --server.adress 0.0.0.0 --server.port 8501
 ```
+
+## 備考
+- 外部の`Ollama`を使用するときに、プロキシが問題となることがあります。
+  streamlitを起動する前に、プロキシの環境変数を設定しなおして起動してください。
+- .envファイルを作成して下記の設定を変更して実行することができます。（記載している値は、デフォルト値）
+  ```
+  OLLAMA_MODEL_NAME=gemma3      # 使用するモデル名
+  OLLAMA_SERVER_NAME=localhost  # Ollamaのサーバー名
+  OLLAMA_SERVER_PORT=11434      # Ollamaのポート
+  ```
+
