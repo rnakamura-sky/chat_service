@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 from langchain_ollama import ChatOllama
 from langchain_core.callbacks import BaseCallbackHandler
-from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 import streamlit as st
 
 class StreamHandler(BaseCallbackHandler):
@@ -33,6 +33,11 @@ load_dotenv()
 OLLAMA_MODEL_NAME = os.getenv("OLLAMA_MODEL_NAME", "gemma3")
 OLLAMA_SERVER_NAME = os.getenv("OLLAMA_SERVER_NAME", "localhost")
 OLLAMA_SERVER_PORT = os.getenv("OLLAMA_SERVER_PORT", "11434")
+
+SYSTEM_CONTENT = """
+あなたは最新情報を正しく把握していません。最新情報について聞かれたらわからないことを伝えるか、最新情報ではないことを伝えてください。
+"""
+
 
 # Streamlit設定
 st.set_page_config(page_title="LangChain Streaming Chat")
@@ -71,6 +76,8 @@ if prompt := st.chat_input("メッセージを入力してください"):
 
         # LLMに渡すメッセージログを生成
         messages = []
+        # システムメッセージを最初に追加
+        messages.append(SystemMessage(content=SYSTEM_CONTENT))
         for role, content in st.session_state.messages:
             if role == "user":
                 messages.append(HumanMessage(content=content))
